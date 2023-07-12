@@ -16,7 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.views import LoginView
+
+import authentication.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", authentication.views.login_page, name="login_page"),    
+    path("user_home/", authentication.views.user_home, name="user_page"), 
+    path("supplier_page/", authentication.views.supplier_page, name="supplier_page"),
+    
+    # TODO: Vue de deconnexion
+      
 ]
+
+
+
+# On va avoir un switch entre nos differentes applications en nous servant du mode d'url et des vues
+
+

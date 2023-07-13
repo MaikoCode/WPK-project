@@ -1,12 +1,101 @@
-{% extends 'base.html' %}
-{% block content %}
-    <h2>Inscription</h2>
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >S’inscrire</button>
-    </form>
-{% endblock content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page d'inscription</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <style>
+    .login-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .custom-width{
+      width: 400px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container login-container">
+    <img src="{% static 'img/webpick_logo.png' %}" alt="logo" />
+    <div class="card custom-width">
+      <div class="card-header text-center">Inscrivez-vous</div>
+      <div class="card-body">
+        <form action="{% url 'sign_up_page' %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" class="form-control my-2 {% if form.username.errors %}is-invalid{% endif %}" id="username" name="username" placeholder="Entrez votre nom d'utilisateur">
+            {% for error in form.username.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control my-2 {% if form.email.errors %}is-invalid{% endif %}" id="email" name="email" placeholder="Entrez votre email">
+            {% for error in form.email.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="password1">Mot de passe</label>
+            <input type="password" class="form-control my-2 {% if form.password1.errors %}is-invalid{% endif %}" id="password1" name="password1" placeholder="Entrez votre mot de passe">
+            {% for error in form.password1.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="password2">Confirmez le mot de passe</label>
+            <input type="password" class="form-control my-2 {% if form.password2.errors %}is-invalid{% endif %}" id="password2" name="password2" placeholder="Confirmez votre mot de passe">
+            {% for error in form.password2.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="role">Rôle</label>
+            <select class="form-control my-2 {% if form.role.errors %}is-invalid{% endif %}" id="role" name="role">
+              <option selected>Choisir...</option>
+              {% for role in roles %}
+                <option value="{{ role }}">{{ role }}</option>
+              {% endfor %}
+            </select>
+            {% for error in form.role.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <button type="submit" class="btn btn-primary my-2">S'inscrire</button>
+        </form>
+        <p class="text-center my-2">Vous avez déjà un compte? <a href="{% url 'login_page' %}">Connectez-vous</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and jQuery -->
+  <script src="{% static 'js/jquery.slim.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>

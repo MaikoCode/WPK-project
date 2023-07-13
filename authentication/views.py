@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import User
 from . import forms
+from django.contrib.auth import get_user_model
 
 
 def sign_up_page(request):
@@ -21,8 +22,13 @@ def sign_up_page(request):
                 return redirect('user_page')
             elif user.role == 'SUPPLIER':
                 return redirect('supplier_page')
-            
-    return render(request, 'authentication/sign_up.html', context={'form': form})
+        else:
+            roles = [role[0] for role in get_user_model().ROLE_CHOICES]
+            return render(request, 'authentication/sign_up.html', context={'form': form, 'roles': roles})
+
+    roles = [role[0] for role in get_user_model().ROLE_CHOICES]        
+    return render(request, 'authentication/sign_up.html', context={'form': form, 'roles': roles})
+
 
 def login_page(request):
     form = forms.LoginForm()
@@ -44,8 +50,12 @@ def login_page(request):
                     return redirect('/admin')  # change to your admin page
             else:
                 message = 'Identifiants invalides.'
-    return render(
-        request, 'authentication/login.html', context={'form': form, 'message': message})
+    context = {
+        'form': form,
+        'message': message
+    }
+    return render(request, 'authentication/login.html', context)
+
 
 @login_required
 def user_home(request):

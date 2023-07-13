@@ -23,7 +23,8 @@ import authentication.views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", authentication.views.login_page, name="login_page"),
-    path("sign_up/", authentication.views.sign_up_page, name="sign_up"),
+    path("login/", authentication.views.login_page, name="login_page"),
+    path("sign_up/", authentication.views.sign_up_page, name="sign_up_page"),
     path("user_home/", authentication.views.user_home, name="user_page"), 
     path("supplier_page/", authentication.views.supplier_page, name="supplier_page"),
     

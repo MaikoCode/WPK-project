@@ -3,4 +3,3 @@
 -equipment
 -billing
 
-// On va esssayer d'integrer la page de connexion et d'inscription deja ??

@@ -3,8 +3,27 @@ from . import forms
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import User
+from . import forms
 
-# Nos differentes vues pour nos differentes gabarits
+
+def sign_up_page(request):
+    form = forms.SignupForm()
+    if request.method == 'POST':
+        form = forms.SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+
+            # Redirigez vers la page appropriée en fonction du rôle de l'utilisateur
+            if user.role == 'ADMIN':
+                return redirect('/admin')
+            elif user.role == 'USER':
+                return redirect('user_page')
+            elif user.role == 'SUPPLIER':
+                return redirect('supplier_page')
+            
+    return render(request, 'authentication/sign_up.html', context={'form': form})
+
 def login_page(request):
     form = forms.LoginForm()
     message = ''
